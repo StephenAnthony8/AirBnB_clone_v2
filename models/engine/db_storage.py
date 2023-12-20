@@ -68,3 +68,10 @@ class DBStorage:
         """Delete from the current database session"""
         if obj:
             self.__session.delete(obj)
+
+    def reload(self):
+        """
+        Create all tables in the db
+        Create the current db session
+        """
+        Base.metadata.create_all(self.__engine)
