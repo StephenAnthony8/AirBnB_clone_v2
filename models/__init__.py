@@ -3,7 +3,7 @@
 import os
 
 # Check the value of HBNB_TYPE_STORAGE environment variable
-storage_type = os.getenv('HBNB_TYPE_STORAGE', 'file')
+storage_type = 'db' #os.getenv('HBNB_TYPE_STORAGE', 'file')
 
 # Choose storage type based on the environment variable 
 

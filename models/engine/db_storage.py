@@ -15,19 +15,15 @@ class DBStorage:
         """Initialize the DBStorage engine"""
         dialect = 'mysql'
         driver = 'mysqldb'
-        user = os.getenv('HBNB_MYSQL_USER')
-        pwd = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST', 'localhost')
-        dbase = os.getenv('HBNB_MYSQL_DB')
+        user = 'hbnb_dev' #os.getenv('HBNB_MYSQL_USER')
+        pwd = 'hbnb_dev_pwd' #os.getenv('HBNB_MYSQL_PWD')
+        host = 'localhost' #os.getenv('HBNB_MYSQL_HOST', 'localhost')
+        dbase = 'hbnb_dev_db' #os.getenv('HBNB_MYSQL_DB')
         db_env = os.getenv('HBNB_ENV', 'production')
 
         db_url = f'{dialect}+{driver}://{user}:{pwd}@{host}/{dbase}'
 
         self.__engine = create_engine(db_url, pool_pre_ping=True)
-
-        if db_env == 'test':
-            
-            Base.metadata.drop_all(self.__engine)
 
         self.__session = scoped_session(sessionmaker(
             bind=self.__engine,
@@ -59,6 +55,7 @@ class DBStorage:
     
     def new(self, obj): # Add the object to the current db session
         """Add the object to the current db session"""
+        Base.metadata.create_all(self.__engine)
         self.__session.add(obj)
     
     def save(self): # Commit all changes of the current db session

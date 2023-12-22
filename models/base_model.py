@@ -14,13 +14,13 @@ class BaseModel:
     """A base class for all hbnb models"""
 
     # question 6 block
-    id = Column(String(60), nullable=False, primary_key=True, default=str(uuid.uuid4()))
+    id = Column(String(60), nullable=False, unique=True, primary_key=True) # default=str(uuid.uuid4())
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     # endof q6 block
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         # new dict block
         base_attributes = {
             'id': str(uuid.uuid4()),
