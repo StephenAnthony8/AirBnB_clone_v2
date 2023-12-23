@@ -14,12 +14,19 @@ class DBStorage:
     def __init__(self):
         
         """Initialize the DBStorage engine"""
+        """ 
+        user = 'hbnb_dev'
+        pwd = 'hbnb_dev_pwd'
+        host = 'localhost'
+        dbase = 'hbnb_dev_db' """
+        # uncomment for testing
+        
         dialect = 'mysql'
         driver = 'mysqldb'
-        user = 'hbnb_dev' #os.getenv('HBNB_MYSQL_USER')
-        pwd = 'hbnb_dev_pwd' #os.getenv('HBNB_MYSQL_PWD')
-        host = 'localhost' #os.getenv('HBNB_MYSQL_HOST', 'localhost')
-        dbase = 'hbnb_dev_db' #os.getenv('HBNB_MYSQL_DB')
+        user = os.getenv('HBNB_MYSQL_USER')
+        pwd = os.getenv('HBNB_MYSQL_PWD')
+        host = os.getenv('HBNB_MYSQL_HOST', 'localhost')
+        dbase = os.getenv('HBNB_MYSQL_DB')
         db_env = os.getenv('HBNB_ENV', 'production')
 
         db_url = f'{dialect}+{driver}://{user}:{pwd}@{host}/{dbase}'
@@ -80,5 +87,14 @@ class DBStorage:
     
     def delete(self, obj=None): # delete from the current db session
         """Delete from the current database session"""
-        if obj:
-            self.__session.delete(obj)
+        if (obj):
+            try:
+                # obj_name = f"{obj.__class__.__name__}.{obj.id}"
+                dict_obj = self.all()
+                if obj in dict_obj.keys():
+                    self.__session.delete(dict_obj[obj])
+                else:
+                    print("Not found")
+            except AttributeError:
+                return
+            

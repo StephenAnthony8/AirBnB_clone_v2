@@ -178,7 +178,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage.all()[key]) # changed
+            print(storage.all()[key])  # changed
         except KeyError:
             print("** no instance found **")
 
@@ -210,7 +210,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
+            storage.delete(key)
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -229,11 +229,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all(args).items(): # changed
+            for k, v in storage.all(args).items():  # changed
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage.all().items(): #changed
+            for k, v in storage.all().items():  # changed
                 print_list.append(str(v))
 
         print(print_list)
@@ -245,8 +245,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, args):
         """Count current number of class instances"""
+
         count = 0
-        for k, v in storage.all().items(): # changed
+        for k in storage.all().keys():  # changed
             if args == k.split('.')[0]:
                 count += 1
         print(count)

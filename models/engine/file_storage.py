@@ -12,10 +12,10 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         specific = {}
         if cls:
-            cls_name = cls.__name__
+            # cls_name = cls.__name__
 
             for key, val in FileStorage.__objects.items():
-                if cls_name in key:
+                if cls in key:
                     specific[key] = val
 
         return (specific if cls else FileStorage.__objects)
@@ -44,10 +44,14 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel,
+            'User': User,
+            'Place': Place,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Review': Review
+            }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -61,8 +65,8 @@ class FileStorage:
         """ Delete an object if it is in the class"""
         if (obj):
             try:
-                obj_name = f"{obj.__class__.__name__}.{obj.id}"
-                if obj_name in FileStorage.__objects.keys():
-                    del FileStorage.__objects[obj_name]
+                # obj_name = f"{obj.__class__.__name__}.{obj.id}"
+                if obj in FileStorage.__objects.keys():
+                    del FileStorage.__objects[obj]
             except AttributeError:
                 return
