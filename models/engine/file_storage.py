@@ -12,7 +12,8 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         specific = {}
         if cls:
-            # cls_name = cls.__name__
+            if isinstance(cls, str) == False:
+                cls = cls.__name__
 
             for key, val in FileStorage.__objects.items():
                 if cls in key:
@@ -65,8 +66,10 @@ class FileStorage:
         """ Delete an object if it is in the class"""
         if (obj):
             try:
-                # obj_name = f"{obj.__class__.__name__}.{obj.id}"
-                if obj in FileStorage.__objects.keys():
-                    del FileStorage.__objects[obj]
+                obj_name = f"{obj.__class__.__name__}.{obj.id}"
+                dict_obj = FileStorage.__objects
+                if obj_name in dict_obj.keys():
+                    del FileStorage.__objects[obj_name]
+
             except AttributeError:
                 return

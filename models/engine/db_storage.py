@@ -20,7 +20,7 @@ class DBStorage:
         host = 'localhost'
         dbase = 'hbnb_dev_db' """
         # uncomment for testing
-        
+
         dialect = 'mysql'
         driver = 'mysqldb'
         user = os.getenv('HBNB_MYSQL_USER')
@@ -53,9 +53,12 @@ class DBStorage:
         classes = [User, State, City, Place, Amenity, Review]
 
         if cls:
+            if isinstance(cls, str) == False:
+                cls = cls.__name__
+
             for cl_ass in classes:
                 name = cl_ass.__name__
-                if cl_ass.__name__ == cls:
+                if cl_ass.__name__ == cls :
                     classes = [cl_ass]
 
         for c in classes:
@@ -89,12 +92,11 @@ class DBStorage:
         """Delete from the current database session"""
         if (obj):
             try:
-                # obj_name = f"{obj.__class__.__name__}.{obj.id}"
+                obj_name = f"{obj.__class__.__name__}.{obj.id}"
                 dict_obj = self.all()
-                if obj in dict_obj.keys():
-                    self.__session.delete(dict_obj[obj])
-                else:
-                    print("Not found")
+                if obj_name in dict_obj.keys():
+                    self.__session.delete(obj)
+
             except AttributeError:
                 return
             
