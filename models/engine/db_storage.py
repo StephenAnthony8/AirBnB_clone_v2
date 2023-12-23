@@ -4,6 +4,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models.base_model import Base
+from sqlalchemy.exc import NoSuchTableError
 class DBStorage:
     """Defines the DBStorage engine for database storage"""
 
@@ -36,20 +37,25 @@ class DBStorage:
         from models.user import User
         from models.state import State
         from models.city import City
-        from models.amenity import Amenity
         from models.place import Place
+        from models.amenity import Amenity
         from models.review import Review
+
+        self.reload()
         objects_dict = {}
-        classes = [User, State, City, Amenity, Place, Review]
+        classes = [User, State, City, Place, Amenity, Review]
 
         if cls:
             classes = [cls]
 
         for c in classes:
-            query_result = self.__session.query(c).all()
-            for obj in query_result:
-                key = "{}.{}".format(type(obj).__name__, obj.id)
-                objects_dict[key] = obj
+            try:
+                query_result = self.__session.query(c).all()
+                for obj in query_result:
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    objects_dict[key] = obj
+            except NoSuchTableError:
+                continue
 
         return objects_dict
     

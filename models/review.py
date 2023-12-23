@@ -3,8 +3,11 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime
 
-class Review(BaseModel):
+class Review(BaseModel, Base):
     """ Review classto store review information """
-    place_id = ""
-    user_id = ""
-    text = ""
+
+    __tablename__ = 'reviews'
+
+    place_id = Column(String(128), nullable=False)
+    user_id = Column(String(128), nullable=False)
+    text = Column(String(128), nullable=False)
