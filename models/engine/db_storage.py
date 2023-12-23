@@ -46,7 +46,10 @@ class DBStorage:
         classes = [User, State, City, Place, Amenity, Review]
 
         if cls:
-            classes = [cls]
+            for cl_ass in classes:
+                name = cl_ass.__name__
+                if cl_ass.__name__ == cls:
+                    classes = [cl_ass]
 
         for c in classes:
             try:
