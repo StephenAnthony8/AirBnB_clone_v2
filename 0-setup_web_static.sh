@@ -45,3 +45,4 @@ echo "$updated_config" | sudo tee /etc/nginx/sites-enabled/default >/dev/null
 
 sudo nginx -qt
 sudo nginx -s reload
+
