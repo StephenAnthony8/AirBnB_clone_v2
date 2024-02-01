@@ -1,48 +1,36 @@
 #!/usr/bin/env bash
-# sets up web servers for deployment of web_static
+# Sets up a web server for deployment of web_static.
+apt-get update
+apt-get -y install nginx
+mkdir /data/
+mkdir /data/web_static/
+mkdir /data/web_static/releases/
+mkdir /data/web_static/shared/
+mkdir /data/web_static/releases/test/
+echo "Stranger Things" > /data/web_static/releases/test/index.html
+ln -sf /data/web_static/releases/test/ /data/web_static/current
+chown -R ubuntu:ubuntu /data/
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
 
-# install nginx if not installed
-sudo apt update && sudo apt install -y nginx
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
 
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared/
+    location /redirect_me {
+        return 301 http://cuberule.com/;
+    }
 
-echo "Test content" | sudo tee /data/web_static/releases/test/index.html > /dev/null
-
-# create symbolic link
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-
-# change ownership to ubuntu user & group
-sudo chown -R ubuntu:ubuntu /data/
-
-# update nginx to server static content tbc (use alias)
-
-updated_config=$(cat <<eof
-
-server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-        root /var/www/html;
-
-        add_header X-Served-By \$hostname;
-
-        location = /redirect_me {
-                return 301;
-        }
-
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-	location /hbnb_static {
-		alias /data/web_static/current/;
-	}
-}
-eof
-)
-
-echo "$updated_config" | sudo tee /etc/nginx/sites-enabled/default >/dev/null
-
-sudo nginx -qt
-sudo nginx -s reload
-
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
+service nginx restart
+exit 0
