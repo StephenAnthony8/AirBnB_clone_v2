@@ -7,6 +7,7 @@ import os
 
 @task
 def do_pack():
+    """packs web_static directory content into an archive"""
     calendar_day, today = str(datetime.today()).split()
     hour, minute, second = today.split(":")
 
