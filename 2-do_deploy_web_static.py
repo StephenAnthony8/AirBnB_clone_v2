@@ -7,6 +7,7 @@ import os
 
 # env.hosts setting
 
+
 env.hosts = ['100.26.152.138', '100.25.33.164']
 
 
@@ -25,9 +26,9 @@ def do_deploy(archive_path):
         tar_command = f'tar -xzf /tmp/{archive_name}.tgz -C {data_filepath}'
         rm_archive = f'rm -rf /tmp/*.tgz'
         rm_symbolic = f'rm -rf {current_filepath}'
-        create_symbolic = f"ln -s {data_filepath} {current_filepath}"
         mv_web_static = f'mv {data_filepath}/web_static/* {data_filepath}/'
         rm_web_static = f'rm -rf {data_filepath}/web_static'
+        create_symbolic = f"ln -s {data_filepath} {current_filepath}/"
         # for shortening
         delete_command = f'{rm_symbolic} && {create_symbolic}'
         # create extraction filepath
