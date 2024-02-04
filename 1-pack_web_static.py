@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 """ 1-pack_web_static - archives web_static directory & contents """
 from datetime import datetime
-from fabric.api import local, task
+from fabric.api import local
 import os
 
 
-@task
 def do_pack():
     """packs web_static directory content into an archive"""
     calendar_day, today = str(datetime.today()).split()
