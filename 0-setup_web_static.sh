@@ -2,7 +2,7 @@
 # sets up web servers for deployment of web_static
 
 # install nginx if not installed
-#sudo apt update && sudo apt install -y nginx
+sudo apt update && sudo apt install -y nginx
 
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
