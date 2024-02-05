@@ -32,19 +32,20 @@ def do_deploy(archive_path):
         # for shortening
         delete_command = f'{rm_symbolic} && {create_symbolic}'
         # create extraction filepath
-        if (put(local_path=archive_path, remote_path='/tmp/').succeeded):
+        try:
+            put(local_path=archive_path, remote_path='/tmp/')
 
             # upload archive to tmp dir of the web server
-            if (run(f"{make_data_filepath}").succeeded):
+            run(f"{make_data_filepath}")
 
-                # uncompress archive to {file_path} && delete archive
-                if (run(f'{tar_command} && {rm_archive}').succeeded):
-                    if (run(f"{mv_web_static} && {rm_web_static}").succeeded):
+            # uncompress archive to {file_path} && delete archive
+            run(f'{tar_command} && {rm_archive}')
+            run(f"{mv_web_static} && {rm_web_static}")
 
-                        # delete and recreate symbolic link
-                        if (run(delete_command).succeeded):
+            # delete and recreate symbolic link
+            run(delete_command)
 
-                            # return (True) if no errors else (False)
-                            return (True)
+            return (True)
+        except Exception:
 
-    return (False)
+            return (False)
