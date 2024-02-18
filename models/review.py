@@ -11,17 +11,22 @@ class Review(BaseModel, Base):
 
     __tablename__ = 'reviews'
     text = Column(String(1024), nullable=False)
-    place_id = Column(String(60), ForeignKey('places.id', ondelete='CASCADE'), nullable=False)
-    user_id = Column(String(60), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    place_id = Column(String(60),
+                      ForeignKey('places.id', ondelete='CASCADE'),
+                      nullable=False)
 
-    # child reference to User
-    user = relationship(
-        "User",
-        back_populates="reviews"
-    )
+    user_id = Column(String(60),
+                     ForeignKey('users.id', ondelete='CASCADE'),
+                     nullable=False)
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        # child reference to User
+        user = relationship(
+            "User",
+            back_populates="reviews"
+        )
 
-    # child reference to Place
-    place = relationship(
-        "Place",
-        back_populates="reviews"
-    )
+        # child reference to Place
+        place = relationship(
+            "Place",
+            back_populates="reviews"
+        )

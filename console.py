@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        # split args by space 
+        # split args by space
         args = args.split(" ")
         cls_name = args.pop(0)
 
@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
             if "=" in parameter:
                 k, v = parameter.split("=")
                 v = eval(v.replace('_', ' '))
-                
+
                 d_args[k] = v
 
         # then by = and evaluate and append the split arg into an item
@@ -140,7 +140,6 @@ class HBNBCommand(cmd.Cmd):
 
         new_instance.save()
         print(new_instance.id)
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -339,6 +338,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

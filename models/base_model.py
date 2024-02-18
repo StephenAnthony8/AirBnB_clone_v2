@@ -7,31 +7,33 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
     id = Column(String(60), primary_key=True, unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
 
-        
         mandatories = ['id', 'created_at', 'updated_at']
         dict_mandatories = {
-            'id' : str(uuid.uuid4()),
-            'created_at' : datetime.now(),
-            'updated_at' : datetime.now()
+            'id': str(uuid.uuid4()),
+            'created_at': datetime.now(),
+            'updated_at': datetime.now()
         }
         # creates / updates instances with missing attributes
         if (kwargs):
             for k in mandatories:
-                if k  in kwargs.keys():
+                if k in kwargs.keys():
                     if k == 'id':
                         dict_mandatories[k] = kwargs[k]
                     else:
-                        dict_mandatories[k] = datetime.strptime(kwargs['updated_at'],
-                                                                '%Y-%m-%dT%H:%M:%S.%f')
+                        dict_mandatories[k] = datetime.strptime(
+                            kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f'
+                            )
 
             if '__class__' in kwargs.keys():
                 del kwargs['__class__']
@@ -39,7 +41,6 @@ class BaseModel:
         kwargs.update(dict_mandatories)
         self.__dict__.update(kwargs)
         # ensure to check the save possibility of this class
-        
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -66,7 +67,8 @@ class BaseModel:
             del dictionary['_sa_instance_state']
 
         return dictionary
-    
+
     def delete(self):
+        """deletes itself from"""
         from models import storage
         storage.delete(self)

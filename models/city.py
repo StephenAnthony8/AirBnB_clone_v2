@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
+import os
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
@@ -10,18 +11,20 @@ class City(BaseModel, Base):
 
     __tablename__ = 'cities'
     name = Column(String(128), nullable=False)
-    state_id = Column(String(60), ForeignKey('states.id', ondelete='CASCADE'), nullable=False)
+    state_id = Column(
+        String(60), ForeignKey('states.id', ondelete='CASCADE'), nullable=False
+        )
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        # child reference to State
+        state = relationship(
+            "State",
+            back_populates="cities"
+        )
 
-    # child reference to State
-    state = relationship(
-        "State",
-        back_populates="cities"
-    )
-
-    # parent reference to Place
-    places = relationship(
-        "Place",
-        cascade="all, delete",
-        passive_deletes=True,
-        back_populates="cities"
-    )
+        # parent reference to Place
+        places = relationship(
+            "Place",
+            cascade="all, delete",
+            passive_deletes=True,
+            back_populates="cities"
+        )

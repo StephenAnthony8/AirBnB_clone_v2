@@ -13,7 +13,7 @@ class FileStorage:
         specific = {}
         if cls:
             # obtains the object name and uses it insteads
-            if isinstance(cls, str) == False:
+            if isinstance(cls, str) is False:
                 cls = cls.__name__
 
             for key, val in FileStorage.__objects.items():
@@ -54,9 +54,9 @@ class FileStorage:
             temp = reload_dict = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
-                
+
                 for key, val in temp.items():
-                        reload_dict[key] = classes[val['__class__']](**val)
+                    reload_dict[key] = classes[val['__class__']](**val)
                 self.all().update(reload_dict)
         except FileNotFoundError:
             pass
