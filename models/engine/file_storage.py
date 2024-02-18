@@ -12,6 +12,7 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         specific = {}
         if cls:
+            # obtains the object name and uses it insteads
             if isinstance(cls, str) == False:
                 cls = cls.__name__
 
@@ -45,20 +46,18 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-            'BaseModel': BaseModel,
-            'User': User,
-            'Place': Place,
-            'State': State,
-            'City': City,
-            'Amenity': Amenity,
-            'Review': Review
-            }
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
-            temp = {}
+            temp = reload_dict = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
+                
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                        reload_dict[key] = classes[val['__class__']](**val)
+                self.all().update(reload_dict)
         except FileNotFoundError:
             pass
 
@@ -67,8 +66,8 @@ class FileStorage:
         if (obj):
             try:
                 obj_name = f"{obj.__class__.__name__}.{obj.id}"
-                dict_obj = FileStorage.__objects
-                if obj_name in dict_obj.keys():
+                dict_obj = FileStorage.__objects.keys()
+                if obj_name in dict_obj:
                     del FileStorage.__objects[obj_name]
 
             except AttributeError:
