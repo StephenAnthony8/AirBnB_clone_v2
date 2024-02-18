@@ -113,3 +113,7 @@ class DBStorage:
 
             except AttributeError:
                 return
+
+    def close(self):
+        """Disposes of a session by calling session.remove()"""
+        self.__session.remove()

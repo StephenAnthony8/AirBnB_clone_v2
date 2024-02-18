@@ -72,3 +72,7 @@ class FileStorage:
 
             except AttributeError:
                 return
+
+    def close(self):
+        """calls reload() method to deserialize objects"""
+        self.reload()

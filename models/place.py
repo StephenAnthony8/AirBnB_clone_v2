@@ -74,13 +74,13 @@ class Place(BaseModel, Base):
         def reviews(self):
             """returns Review objects with place_id equal to self.id"""
             from models import storage
-            self.reviews = []
+            r_cont = []
 
             container = storage.all('Review')
             for val in container.values():
                 if val.place_id == self.id:
-                    self.reviews.append(val)
-            return (val)
+                    r_cont.append(val)
+            return (r_cont)
 
         @property
         def amenities(self):

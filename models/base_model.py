@@ -32,14 +32,15 @@ class BaseModel:
                         dict_mandatories[k] = kwargs[k]
                     else:
                         dict_mandatories[k] = datetime.strptime(
-                            kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f'
+                            kwargs[k], '%Y-%m-%dT%H:%M:%S.%f'
                             )
+                    del kwargs[k]
 
             if '__class__' in kwargs.keys():
                 del kwargs['__class__']
 
-        kwargs.update(dict_mandatories)
-        self.__dict__.update(kwargs)
+        dict_mandatories.update(kwargs)
+        self.__dict__.update(dict_mandatories)
         # ensure to check the save possibility of this class
 
     def __str__(self):

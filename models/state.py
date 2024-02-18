@@ -12,7 +12,7 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-    # Parent reference to City
+        # Parent reference to City
         cities = relationship(
             "City",
             cascade="all, delete",
@@ -23,6 +23,8 @@ class State(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """creates a state object saved to JSON"""
         super().__init__(**kwargs)
+        if os.getenv('HBNB_TYPE_STORAGE') != 'db':
+            cities = []
 
     if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
@@ -30,10 +32,10 @@ class State(BaseModel, Base):
             """returns city objects with state_id equal to self.id"""
             from models import storage
             from models.city import City
-            self.cities = []
+            l_cont = []
 
             container = storage.all('City')
             for val in container.values():
                 if val.state_id == self.id:
-                    self.cities.append(val)
-            return (val)
+                    l_cont.append(val)
+            return (l_cont)
