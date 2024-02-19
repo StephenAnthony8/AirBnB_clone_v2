@@ -12,12 +12,12 @@ class Review(BaseModel, Base):
     __tablename__ = 'reviews'
     text = Column(String(1024), nullable=False)
     place_id = Column(String(60),
-                      ForeignKey('places.id', ondelete='CASCADE'),
-                      nullable=False)
+                      ForeignKey('places.id'),
+                      nullable=False)#, ondelete='CASCADE'
 
     user_id = Column(String(60),
-                     ForeignKey('users.id', ondelete='CASCADE'),
-                     nullable=False)
+                     ForeignKey('users.id'),
+                     nullable=False)#, ondelete='CASCADE'
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         # child reference to User
         user = relationship(

@@ -12,8 +12,8 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
     name = Column(String(128), nullable=False)
     state_id = Column(
-        String(60), ForeignKey('states.id', ondelete='CASCADE'), nullable=False
-        )
+        String(60), ForeignKey('states.id'), nullable=False
+        ) #, ondelete='CASCADE'
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         # child reference to State
         state = relationship(
