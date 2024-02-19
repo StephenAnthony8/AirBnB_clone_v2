@@ -21,4 +21,4 @@ def storage_close_call(exc=None):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
